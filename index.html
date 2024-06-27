@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generative AI Content Generator</title>
+</head>
+<body>
+    <h1>Generative AI Content Generator</h1>
+    <form id="generateForm">
+        <input type="text" id="prompt" placeholder="Enter your prompt" required>
+        <select id="model">
+            <option value="gemini-1.5-flash-latest">Gemini-1.5-Flash</option>
+            <option value="gemini-1.5-long">Gemini-1.5-Long</option>
+            <option value="gemini-1.5-medium">Gemini-1.5-Medium</option>
+            <option value="gemini-1.5-short">Gemini-1.5-Short</option>
+            <option value="gemini-1.5-tiny">Gemini-1.5-Tiny</option>
+        </select>
+        <button type="submit">Generate</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('generateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const prompt = document.getElementById('prompt').value;
+            const model = document.getElementById('model').value;
+
+            fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt, model }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = data.text;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
